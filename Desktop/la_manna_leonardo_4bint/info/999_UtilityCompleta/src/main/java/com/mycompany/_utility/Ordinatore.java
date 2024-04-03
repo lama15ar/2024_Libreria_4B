@@ -40,8 +40,9 @@ public class Ordinatore
 //SELECTION SORT
     /**
      * Restituisce un array di interi in ordine crescente
+     * utilizzando l'algoritmo selection sort
      * @param a array da ordinare
-     * @return array in ordine crescente
+     * @return una copia dell'array ordinato in ordine crescente 
      */
     public static int[] selectionSortCrescente(int[] a)
     {
@@ -62,6 +63,8 @@ public class Ordinatore
     
     /**
      * Restituisce un array di interi in ordine decrescente
+     * utilizzando l'algoritmo selection sort
+     * @return una copia dell'array ordinato in ordine crescente 
      * @param a array da ordinare
      * @return array in ordine decrescente
      */
@@ -85,7 +88,7 @@ public class Ordinatore
     /**
      * Restituisce un array di stringhe in ordine crescente
      * @param s array da ordinare
-     * @return array in ordine crescente
+     * @return una copia dell'arrayo in ordine crescente
      */
     public static String[] selectionSortCrescente(String[] s)
     {
