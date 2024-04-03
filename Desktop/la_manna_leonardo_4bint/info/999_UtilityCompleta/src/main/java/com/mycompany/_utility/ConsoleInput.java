@@ -8,7 +8,11 @@ import java.io.*;
 
 /**
  * Classe che rappresenta una Console di Input (tastiera)
- * @author Studente
+ * un oggetto istanza della classe consoleinput espone dei metodi 
+ * che consentono di acquisire dalla tastiera 
+ * variabili di ciascun tipo di dato nativo (int,short,double,ecc)
+ * e oggetti di tipo string
+ * @author SPlona
  */
 public class ConsoleInput
 {
