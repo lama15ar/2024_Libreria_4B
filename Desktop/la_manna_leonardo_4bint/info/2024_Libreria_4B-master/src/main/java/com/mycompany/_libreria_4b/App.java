@@ -36,6 +36,7 @@ public class App
         ConsoleInput tastiera=new ConsoleInput();
         String titolo,autore;
         int numeroPagine,ripiano, posizione;
+        TextFile f1 = null;
        
         Libro lib;
         Libro[] elencoLibriOrdinatiAlfabeticamente;
@@ -64,14 +65,14 @@ public class App
             voceMenuScelta=menu.sceltaMenu();
             switch (voceMenuScelta) 
             {
-                case 0:
+                case 0://esci
                     System.out.println("Arrivederci");
                     break;
-                case 1:
+                case 1://visualizza tutti
                     System.out.println(s1.toString());
                     break;
-                case 2:
-                   // System.out.println("Premi invio per continuare..");
+                case 2://aggiungi volume
+                   
                    // tastiera.nextLine();
                     
                     try 
@@ -145,7 +146,7 @@ public class App
 
 
 
-                case 3:
+                case 3://get volume
                     try 
                     {
                         do
@@ -196,7 +197,7 @@ public class App
                     }
                     break;
                     
-                case 4:
+                case 4://rimuovi volume
 
                     try 
                     {
@@ -249,7 +250,7 @@ public class App
                   
                     break;
 
-                case 5:
+                case 5:// elenco titoli autore 
                     try
                     {
                         System.out.println("Autore --> ");
@@ -271,7 +272,7 @@ public class App
                     }
                     break;
                 
-                case 6:
+                case 6://ordine alfabetico titoli dei volumi 
                     elencoLibriOrdinatiAlfabeticamente=s1.elencoLibriOrdinatoPerTitolo();
                     for(int i=0;i<elencoLibriOrdinatiAlfabeticamente.length;i++)
                     {
@@ -279,11 +280,11 @@ public class App
                     }
                     break;
                 
-                case 7:
+                case 7://esporta CSV
 
                     try 
                     {
-                        TextFile f1= new TextFile(nomeFileCSV,'W'); //Apro ill file in scrittura
+                        f1= new TextFile(nomeFileCSV,'W'); //Apro ill file in scrittura
                         String datiVolume;
                         for(int i=0;i<s1.getNumRipiani();i++)
                         {
@@ -319,6 +320,71 @@ public class App
                     }
         
                     break;
+                    
+                case 8: 
+                    String rigaLetta;
+                    String[] datiVolume;
+                    
+                    try 
+                    {
+                        //importa da file CSV
+                        f1=new TextFile(nomeFileCSV, 'R');
+                        do
+                        {
+                             try
+                            {
+                                rigaLetta=f1.fromFile();
+                                datiVolume=rigaLetta.split(";");
+                                ripiano=Integer.parseInt(datiVolume[0]);
+                                posizione=Integer.parseInt(datiVolume[1]);
+                                titolo=datiVolume[2];
+                                autore=datiVolume[3];
+                                numeroPagine=Integer.parseInt(datiVolume[4]);
+                                lib=new Libro(titolo,autore,numeroPagine);
+                                 try
+                                 {
+                                     s1.setLibro(lib, ripiano, posizione);
+                                 } 
+                                 catch (EccezioneRipianoNonValido ex) 
+                                 {
+                                     System.out.println("ERRORE:ripiano"+ripiano+"non corretto per il volume"+titolo);
+                                 } 
+                                 catch (EccezionePosizioneNonValida ex) 
+                                 {
+                                     System.out.println("ERRORE:posizione"+posizione+"non corretto per il volume"+titolo);
+                                 } 
+                                 catch (EccezionePosizioneOccupata ex) 
+                                 {
+                                     System.out.println("nel ripiano "+ripiano+"e posizione"+posizione+"è gia presente un altro volume.il volume"+titolo+"non sarà posizionato");
+                                     
+                                 }
+                                
+                                
+                                
+                                
+                            }
+                            catch (FileException ex) 
+                            {
+                            
+                              f1.closeFile();
+                              System.out.println("fine operazione di caricamento ");
+                              break;
+                            }
+                    
+                        }while(true); 
+                    }
+                            
+                        
+                        
+                       
+                    catch (IOException ex) 
+                    {
+                        System.out.println("impossbile accederer al file");
+                    } 
+                   
+                  
+                    break;
+
 
                     
             }
