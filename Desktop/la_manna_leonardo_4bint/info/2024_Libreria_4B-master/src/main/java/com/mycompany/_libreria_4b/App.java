@@ -9,7 +9,12 @@ import eccezioni.EccezionePosizioneOccupata;
 import eccezioni.EccezionePosizioneVuota;
 import eccezioni.EccezioneRipianoNonValido;
 import eccezioni.FileException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +32,7 @@ public class App
 
     public static void main(String[] args) 
     {
-        int numeroVociMenu=9;
+        int numeroVociMenu=11;
         String[] vociMenu=new String[numeroVociMenu];
         int voceMenuScelta;
         Menu menu;
@@ -42,6 +47,30 @@ public class App
         Libro[] elencoLibriOrdinatiAlfabeticamente;
         String [] elencoTitoliAutore;
         String nomeFileCSV="volumi.csv";
+        String nomeFileBinario="scaffale.bin";
+        
+        //caricamneto ddati scaffale
+        
+          try 
+            {
+             ObjectInputStream reader=new ObjectInputStream(new FileInputStream(nomeFileBinario));
+             s1=(Scaffale)reader.readObject();
+             reader.close();
+             System.out.println("Caricamento effettuato corretamente");
+            } 
+             catch (FileNotFoundException ex) 
+            {
+              System.out.println("file non trovato ");
+            } 
+            catch (IOException ex) 
+            {
+              System.out.println("impossbile accedere al file");
+            } 
+             catch (ClassNotFoundException ex) 
+            {
+              System.out.println("impossbile legger il dato memorizzato ");
+            }
+             
         
         vociMenu[0]="0 -->\tEsci";
         vociMenu[1]="1 -->\tVisualizza tutti i volumi dello scaffale";
@@ -52,6 +81,8 @@ public class App
         vociMenu[6]="6 -->\tMostra elenco dei volumi presenti ordinato alfabeticamente per titolo";
         vociMenu[7]="7 -->\tEsporta volumi in formato CSV";
         vociMenu[8]="8 -->\tImporta volumi dal file CSV";
+        vociMenu[9]="9 -->\tSalva dati scaffale";
+        vociMenu[10]="10 -->\tCarica dati scaffale";
         
         menu=new Menu(vociMenu);
         
@@ -61,7 +92,7 @@ public class App
         
         do
         {
-            System.out.println("MENU:");
+            
             voceMenuScelta=menu.sceltaMenu();
             switch (voceMenuScelta) 
             {
@@ -384,9 +415,53 @@ public class App
                    
                   
                     break;
-
+                case 9://serializzazione 
+                
+                    try 
+                    {
+                        ObjectOutputStream writer=new ObjectOutputStream(new FileOutputStream(nomeFileBinario));
+                        writer.writeObject(s1);
+                        writer.flush();
+                        writer.close();
+                        System.out.println("salvataggio avvenuto corettamente");
+                        
+                    }
+                    catch (FileNotFoundException ex) 
+                    {
+                        System.out.println("file non trovato ");
+                    } 
+                    catch (IOException ex) 
+                    {
+                        System.out.println("impossbile accedere al file");
+                    }
+                    break;
+                case 10:
+                
+                    try 
+                    {
+                       ObjectInputStream reader=new ObjectInputStream(new FileInputStream(nomeFileBinario));
+                       s1=(Scaffale)reader.readObject();
+                       reader.close();
+                       System.out.println("Caricamento effettuato corretamente");
+                    } 
+                    catch (FileNotFoundException ex) 
+                    {
+                        System.out.println("file non trovato ");
+                    } 
+                    catch (IOException ex) 
+                    {
+                        System.out.println("impossbile accedere al file");
+                    } 
+                    catch (ClassNotFoundException ex) 
+                    {
+                        System.out.println("impossbile legger il dato memorizzato ");
+                    }
+                    break;
 
                     
+                   
+                
+        
             }
         }while(voceMenuScelta!=0);
         
